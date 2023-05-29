@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lector de texto en voz</title>
+    <meta name="description"
+        content="Convierte texto en voz con este lector de texto en voz. Elige el narrador, ajusta la velocidad de lectura y escucha el texto convertido a voz.">
+    <meta name="keywords"
+        content="lector de texto en voz, convertir texto en voz, voz en texto, texto a voz, Web Speech API, narrador de texto en voz">
+    <link rel="icon" href="icono.png">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .text-area {
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <textarea id="texto" rows="4" cols="50" class="text-area"></textarea>
+        <select id="narrador" class="text-area"></select>
+        <div class="text-area">
+            <label for="velocidad">Velocidad de lectura:</label>
+            <input type="range" id="velocidad" min="0.1" max="2" step="0.1" value="1">
+        </div>
+        <div class="button-container">
+            <button onclick="leerTexto()">Leer</button>
+            <button onclick="detenerLectura()">Detener</button>
+        </div>
+    </div>
+    <script>
+        var synthesis = window.speechSynthesis;
+        var utterance;
+        window.onload = function () {
+            var select = document.getElementById("narrador");
+            var voices = synthesis.getVoices();
+
+            for (var i = 0; i < voices.length; i++) {
+                var option = document.createElement("option");
+                option.text = voices[i].name;
+                option.value = voices[i].name;
+                select.add(option);
+            }
+        };
+        function leerTexto() {
+            var texto = document.getElementById("texto").value;
+            var narrador = document.getElementById("narrador").value;
+            var velocidad = document.getElementById("velocidad").value;
+            if ('speechSynthesis' in window) {
+                if (synthesis.speaking) {
+                    synthesis.cancel();
+                }
+                utterance = new SpeechSynthesisUtterance(texto);
+                var voices = synthesis.getVoices();
+                for (var i = 0; i < voices.length; i++) {
+                    if (voices[i].name === narrador) {
+                        utterance.voice = voices[i];
+                        break;
+                    }
+                }
+                utterance.rate = velocidad;
+                synthesis.speak(utterance);
+            } else {
+                alert("Lo siento, tu navegador no es compatible con la Web Speech API.");
+            }
+        }
+        function detenerLectura() {
+            if (synthesis.speaking) {
+                synthesis.cancel();
+            }
+        }
+    </script>
+</body>
+
+</html>
