@@ -28,6 +28,9 @@
 
         .text-area {
             margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            resize: none;
         }
 
         .button-container {
@@ -42,7 +45,7 @@
 <body>
     <div class="container">
         <label for="texto">Texto:</label>
-        <textarea id="texto" rows="4" cols="50" class="text-area" placeholder="Escribe aquí tu texto"></textarea>
+        <textarea id="texto" rows="4" class="text-area" placeholder="Escribe aquí tu texto"></textarea>
         <label for="narrador">Narrador:</label>
         <select id="narrador" class="text-area" title="Selecciona un narrador"></select>
         <div class="text-area">
